@@ -28,12 +28,12 @@
     @apply w-full rounded-lg bg-dark-3 px-4 py-5 sm:w-96;
   }
 
-  .community-card-btn {
+  .community-card_btn {
     @apply rounded-lg bg-primary-500 px-5 py-1.5 text-small-regular !text-light-1 !important;
   }
 
   /* thread card  */
-  .thread-card-bar {
+  .thread-card_bar {
     @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
   }
 
@@ -42,43 +42,43 @@
     @apply flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:bg-dark-3 max-xs:p-4 xs:flex-row xs:items-center;
   }
 
-  .user-card-avatar {
+  .user-card_avatar {
     @apply flex flex-1 items-start justify-start gap-3 xs:items-center;
   }
 
-  .user-card-btn {
+  .user-card_btn {
     @apply h-auto min-w-[74px] rounded-lg bg-primary-500 text-[12px] text-light-1 !important;
   }
 
-  .search-bar {
+  .searchbar {
     @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
   }
 
-  .search-bar-input {
+  .searchbar_input {
     @apply border-none bg-dark-3 text-base-regular text-light-4 outline-none !important;
   }
 
-  .top-bar {
+  .topbar {
     @apply fixed top-0 z-30 flex w-full items-center justify-between bg-dark-2 px-6 py-3;
   }
 
-  .bottom-bar {
+  .bottombar {
     @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-lg xs:px-7 md:hidden;
   }
 
-  .bottom-bar-container {
+  .bottombar_container {
     @apply flex items-center justify-between gap-3 xs:gap-5;
   }
 
-  .bottom-bar-link {
+  .bottombar_link {
     @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
   }
 
-  .left-side-bar {
+  .leftsidebar {
     @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-2 pb-5 pt-28 max-md:hidden;
   }
 
-  .left-sidebar-link {
+  .leftsidebar_link {
     @apply relative flex justify-start gap-4 rounded-lg p-4;
   }
 
@@ -86,7 +86,7 @@
     @apply mt-10 flex w-full items-center justify-center gap-5;
   }
 
-  .right-side-bar {
+  .rightsidebar {
     @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-dark-2 px-10 pb-6 pt-28 max-xl:hidden;
   }
 }
@@ -139,15 +139,15 @@
 }
 
 /* Account Profile  */
-.account-form-image-label {
+.account-form_image-label {
   @apply flex h-24 w-24 items-center justify-center rounded-full bg-dark-4 !important;
 }
 
-.account-form-image-input {
+.account-form_image-input {
   @apply cursor-pointer border-none bg-transparent outline-none file:text-blue !important;
 }
 
-.account-form-input {
+.account-form_input {
   @apply border border-dark-4 bg-dark-3 text-light-1 !important;
 }
 
@@ -156,6 +156,6 @@
   @apply mt-10 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
 }
 
-.comment-form-btn {
+.comment-form_btn {
   @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
 }
