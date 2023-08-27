@@ -16,7 +16,7 @@ const LeftSideBar = () => {
   const pathName = usePathname();
 
   return (
-    <section className="custom-scrollbar left-side-bar">
+    <section className="custom-scrollbar left-sidebar">
       <div className="flex flex-1 flex-col w-full gap-6 px-6">
         {sidebarLinks.map((link) => {
           const isActive =

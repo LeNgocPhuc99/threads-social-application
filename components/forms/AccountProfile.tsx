@@ -5,10 +5,10 @@ import { ChangeEvent, useState } from "react";
 
 // nextjs import
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 // shahcn component import
 import { Button } from "@/components/ui/button";
-
 import {
   Form,
   FormControl,
@@ -31,6 +31,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
 import { useUploadThing } from "@/lib/uploadthing";
 
+import { updateUser } from "@/lib/actions/user.action";
+
 // utils import
 import { isBase64Image } from "@/lib/utils";
 
@@ -46,6 +48,9 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const { startUpload } = useUploadThing("media");
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   const form = useForm({
     resolver: zodResolver(UserValidation),
@@ -83,6 +88,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     // profile image
+    console.log("update user data");
     const blob = values.profile_photo;
     const hasImageChange = isBase64Image(blob);
 
@@ -95,6 +101,20 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     }
 
     // TODO: update uer profile
+    updateUser({
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      path: pathname,
+    });
+
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -108,7 +128,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           name="profile_photo"
           render={({ field }) => (
             <FormItem className="flex items-center gap-4">
-              <FormLabel className="account-form_image-label">
+              <FormLabel className="account-form-image-label">
                 {field.value ? (
                   <Image
                     src={field.value}
@@ -134,7 +154,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                   type="file"
                   accept="image/*"
                   placeholder="Upload a photo"
-                  className="account-form_image-input"
+                  className="account-form-image-input"
                   onChange={(e) => handleUploadImage(e, field.onChange)}
                 />
               </FormControl>
@@ -152,7 +172,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
               <FormControl>
                 <Input
                   type="text"
-                  className="account-form_input no-focus"
+                  className="account-form-input no-focus"
                   {...field}
                 />
               </FormControl>
@@ -170,7 +190,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
               <FormControl>
                 <Input
                   type="text"
-                  className="account-form_input no-focus"
+                  className="account-form-input no-focus"
                   {...field}
                 />
               </FormControl>
@@ -188,7 +208,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
               <FormControl>
                 <Textarea
                   rows={10}
-                  className="account-form_input no-focus"
+                  className="account-form-input no-focus"
                   {...field}
                 />
               </FormControl>
