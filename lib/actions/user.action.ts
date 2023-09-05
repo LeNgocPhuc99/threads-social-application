@@ -18,10 +18,17 @@ interface Params {
     path: string
 }
 
+/**
+ *  update user's profile
+ * @param Params
+ * 
+ */
 export async function updateUser({ userId, username, name, bio, image, path }: Params): Promise<void> {
-    connectToDB();
 
     try {
+        // connect to database
+        connectToDB();
+
         await User.findOneAndUpdate(
             { id: userId },
             {
@@ -39,6 +46,22 @@ export async function updateUser({ userId, username, name, bio, image, path }: P
             revalidatePath(path)
         }
     } catch (error: any) {
-        console.log(`Failed to update/create user: ${error.message}`);
+        throw new Error(`Failed to update/create user: ${error.message}`)
+    }
+}
+
+/**
+ * Get user by id
+ * @param userId 
+ */
+export async function fetchUser(userId: string) {
+    try {
+        // connect to database
+        connectToDB();
+
+        return await User.findOne({ id: userId })
+
+    } catch (error: any) {
+        throw new Error(`Failed to fetch user: ${error.message}`)
     }
 }

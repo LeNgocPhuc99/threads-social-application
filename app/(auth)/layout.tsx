@@ -1,6 +1,7 @@
 // specify different rules for the authentication route
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 import { Inter } from "next/font/google";
 
@@ -21,9 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
       <html lang="en">
-        <body className={`${inter.className} bg-dark-1`}>{children}</body>
+        <body
+          suppressHydrationWarning={true}
+          className={`${inter.className} bg-dark-1`}
+        >
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
