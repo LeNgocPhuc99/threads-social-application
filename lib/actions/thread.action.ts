@@ -41,3 +41,46 @@ export async function createThread({ text, author, communityId, path }: Params) 
 
 
 }
+
+export async function fetchThreads(pageNumber = 1, pageSize = 20) {
+    try {
+        connectToDB();
+
+        // calculate the number of posts to skip
+        const skipAmount = (pageNumber - 1) * pageSize;
+
+        // Fetch the posts that have no parent
+        const threadQuery = Thread.find({
+            parentId: {
+                $in: [null, undefined]
+            }
+        })
+            .sort({ createAt: 'desc' })
+            .skip(skipAmount)
+            .limit(pageSize)
+            .populate({ path: 'author', model: User })
+            .populate({
+                path: 'children', 
+                populate: {
+                    path: 'author',
+                    model: User,
+                    select: "_id name parentId image"
+                }
+            })
+
+        const totalPostCount = await Thread.countDocuments({
+            parentId: {
+                $in: [null, undefined]
+            }
+        })
+
+        const threads = await threadQuery.exec();
+
+        const isNext = totalPostCount > skipAmount + threads.length;
+
+        return { threads, isNext }
+
+    } catch (error: any) {
+        throw new Error(`Failed to fetch threads`)
+    }
+}

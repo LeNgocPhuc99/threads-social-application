@@ -40,10 +40,10 @@ import { isBase64Image } from "@/lib/utils";
 // type import
 import { User } from "@/types";
 
-type Props = {
+interface Props {
   user: User;
   btnTitle: string;
-};
+}
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([]);

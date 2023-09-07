@@ -29,9 +29,9 @@ import { ThreadValidation } from "@/lib/validations/thread";
 import { updateUser } from "@/lib/actions/user.action";
 import { createThread } from "@/lib/actions/thread.action";
 
-type Props = {
+interface Props {
   userId: string;
-};
+}
 
 const PostThread = ({ userId }: Props) => {
   const router = useRouter();
