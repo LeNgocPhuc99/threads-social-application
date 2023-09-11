@@ -60,7 +60,7 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
             .limit(pageSize)
             .populate({ path: 'author', model: User })
             .populate({
-                path: 'children', 
+                path: 'children',
                 populate: {
                     path: 'author',
                     model: User,
@@ -82,5 +82,75 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 
     } catch (error: any) {
         throw new Error(`Failed to fetch threads`)
+    }
+}
+
+export async function fetchThreadById(id: string) {
+    try {
+        connectToDB();
+        // TODO: Populate Community
+        const thread = await Thread.findById(id)
+            .populate({
+                path: 'author',
+                model: User,
+                select: "_id id name image"
+            })
+            .populate({
+                path: 'children',
+                populate: [
+                    {
+                        path: 'author',
+                        model: User,
+                        select: '_id id name parentId image'
+                    },
+                    {
+                        path: 'children',
+                        model: Thread,
+                        populate: {
+                            path: 'author',
+                            model: User,
+                            select: "_id id name parenId image"
+                        }
+                    }
+                ]
+            }).exec();
+
+        return thread;
+
+    } catch (error: any) {
+        throw new Error(`Error fetching thread: ${error.message}`)
+    }
+}
+
+export async function addCommentToThreads(threadId: string, commentText: string, userId: string, path: string) {
+    try {
+        connectToDB();
+
+        // find the original thread by its Id
+        const originalThread = await Thread.findById(threadId);
+        if (!originalThread) {
+            throw new Error("Thread not found");
+        }
+
+        // create a new thread with the comment text
+        const commentThread = new Thread({
+            text: commentText,
+            author: userId,
+            parentId: threadId
+        })
+
+        // save new thread
+        const savedCommentThread = await commentThread.save();
+
+        // update the original thread to include the new comment
+        originalThread.children.push(savedCommentThread._id)
+
+        // save original thread
+        originalThread.save();
+
+        revalidatePath(path);
+
+    } catch (error: any) {
+        throw new Error(`Error adding comment to thread: ${error.message}`)
     }
 }

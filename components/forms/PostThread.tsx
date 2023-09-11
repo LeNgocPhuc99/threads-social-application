@@ -26,7 +26,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 // libs import
 import { ThreadValidation } from "@/lib/validations/thread";
-import { updateUser } from "@/lib/actions/user.action";
 import { createThread } from "@/lib/actions/thread.action";
 
 interface Props {
@@ -72,7 +71,7 @@ const PostThread = ({ userId }: Props) => {
                 Content
               </FormLabel>
               <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1">
-                <Textarea rows={5} {...field} />
+                <Textarea rows={15} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
