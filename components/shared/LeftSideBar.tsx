@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
 // clerk import
-import { SignedIn, SignOutButton } from "@clerk/nextjs";
+import { SignedIn, SignOutButton, useAuth } from "@clerk/nextjs";
 
 // const import
 import { sidebarLinks } from "@/constants";
@@ -14,6 +14,7 @@ import { sidebarLinks } from "@/constants";
 const LeftSideBar = () => {
   const router = useRouter();
   const pathName = usePathname();
+  const { userId } = useAuth();;
 
   return (
     <section className="custom-scrollbar left-sidebar">
@@ -23,6 +24,11 @@ const LeftSideBar = () => {
             (pathName.includes(link.route) && link.route.length > 1) || // other page
             pathName === link.route; // home page
           // console.log
+
+          if (link.route === "/profile") {
+            link.route = `${link.route}/${userId}`;
+          }
+
           return (
             <Link
               key={link.label}
