@@ -9,8 +9,9 @@ import Thread from "../models/thread.model";
 
 // libs import
 import { connectToDB } from "../mongoose"
+import { FilterQuery, SortOrder } from "mongoose";
 
-interface Params {
+interface UpdateUserParams {
     userId: string;
     username: string;
     name: string;
@@ -19,12 +20,20 @@ interface Params {
     path: string
 }
 
+interface FetchUserParams {
+    userId: string;
+    searchString?: string;
+    pageNumber?: number;
+    pageSize?: number;
+    sortBy?: SortOrder
+}
+
 /**
  *  update user's profile
  * @param Params
  * 
  */
-export async function updateUser({ userId, username, name, bio, image, path }: Params): Promise<void> {
+export async function updateUser({ userId, username, name, bio, image, path }: UpdateUserParams): Promise<void> {
 
     try {
         // connect to database
@@ -88,5 +97,44 @@ export async function fetchUserPosts(userId: string) {
         return threads;
     } catch (error: any) {
         throw new Error(`Failed to fetch user posts: ${error.message}`)
+    }
+}
+
+export async function fetchUsers(
+    { userId, searchString = "", pageNumber = 1, pageSize = 20, sortBy = "desc" }: FetchUserParams) {
+    try {
+        connectToDB();
+        const skipAmount = (pageNumber - 1) * pageSize;
+
+        const regex = new RegExp(searchString, "i");
+
+        const query: FilterQuery<typeof User> = {
+            id: { $ne: userId }
+        }
+
+        if (searchString.trim() !== '') {
+            query.$or = [
+                { username: { $regex: regex } },
+                { name: { $regex: regex } }
+            ]
+        }
+
+        const sortOptions = { createdAt: sortBy }
+
+        const usersQuery = User.find(query)
+            .sort(sortOptions)
+            .skip(skipAmount)
+            .limit(pageSize);
+
+        const totalUserQuery = await User.countDocuments(query);
+
+        const users = await usersQuery.exec();
+
+        const isNext = totalUserQuery > skipAmount + users.length;
+
+        return { users, isNext }
+
+    } catch (error: any) {
+        throw new Error(`Failed to fetch uses: ${error.message}`)
     }
 }
