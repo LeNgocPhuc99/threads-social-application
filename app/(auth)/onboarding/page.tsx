@@ -1,5 +1,11 @@
+// nextjs import
+import { redirect } from "next/navigation";
+
 // clerk import
 import { currentUser } from "@clerk/nextjs";
+
+// libs import
+import { fetchUser } from "@/lib/actions/user.action";
 
 // component import
 import AccountProfile from "@/components/forms/AccountProfile";
@@ -9,8 +15,10 @@ import { User } from "@/types";
 
 async function Page() {
   const user = await currentUser();
+  if (!user) return;
 
-  const userInfo = {};
+  const userInfo = await fetchUser(user.id);
+  if (userInfo?.onBoarded) redirect("/");
 
   // id: string;
   // objectId: string;
