@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 // third-party libs import
 import * as z from "zod";
+import { useOrganization } from "@clerk/nextjs";
 
 // shahcn component import
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,7 @@ interface Props {
 const PostThread = ({ userId }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
+  const { organization } = useOrganization();
 
   const form = useForm({
     resolver: zodResolver(ThreadValidation),
@@ -49,10 +51,9 @@ const PostThread = ({ userId }: Props) => {
     await createThread({
       text: values.thread,
       author: userId,
-      communityId: "",
+      communityId: organization ? organization.id : null,
       path: pathName,
     });
-
     router.push("/");
   };
 
