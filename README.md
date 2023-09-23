@@ -1,7 +1,7 @@
 This is a threads social application clone using Nextjs 13
-## Getting Started
+## Thread Social Application Clone
 
-First, run the development server:
+### Run
 
 ```bash
 npm run dev
@@ -10,3 +10,9 @@ yarn dev
 # or
 pnpm dev
 ```
+### Tech Skills
+NextJs, ReactJS, Tailwind CSS, MongoDB, Typescript
+
+### Tutorial
+https://www.youtube.com/watch?v=O5cmLDVTgAs
+
